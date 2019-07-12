@@ -74,7 +74,7 @@ dp.sh.Toolbar.Commands = {
     },
     About: {
         label: '?',
-        func: function (highlighter) {
+        func: function () {
             var wnd = window.open('', '_blank', 'dialog,width=300,height=150,scrollbars=0');
             var doc = wnd.document;
             dp.sh.Utils.CopyStyles(doc, window.document);
@@ -104,7 +104,7 @@ dp.sh.Toolbar.Command = function (name, sender) {
 }
 dp.sh.Utils.CopyStyles = function (destDoc, sourceDoc) {
     var links = sourceDoc.getElementsByTagName('link');
-    for (var i = 0; i < links.length; i++)
+    for (let i = 0; i < links.length; i++)
         if (links[i].rel.toLowerCase() == 'stylesheet')
             destDoc.write('<link type="text/css" rel="stylesheet" href="' + links[i].href + '"></link>');
 }
@@ -151,7 +151,7 @@ dp.sh.Highlighter.prototype.CreateElement = function (name) {
     return result;
 }
 dp.sh.Highlighter.prototype.GetMatches = function (regex, css) {
-    var index = 0;
+    // var index = 0;
     var match = null;
     while ((match = regex.exec(this.code)) != null)
         this.matches[this.matches.length] = new dp.sh.Match(match[0], match.index, css);
@@ -166,7 +166,7 @@ dp.sh.Highlighter.prototype.AddBit = function (str, css) {
     if (css != null) {
         if ((/br/gi).test(str)) {
             var lines = str.split('&nbsp;<br>');
-            for (var i = 0; i < lines.length; i++) {
+            for (let i = 0; i < lines.length; i++) {
                 span = this.CreateElement('SPAN');
                 span.className = css;
                 span.innerHTML = lines[i];
@@ -187,7 +187,7 @@ dp.sh.Highlighter.prototype.AddBit = function (str, css) {
 dp.sh.Highlighter.prototype.IsInside = function (match) {
     if (match == null || match.length == 0)
         return false;
-    for (var i = 0; i < this.matches.length; i++) {
+    for (let i = 0; i < this.matches.length; i++) {
         var c = this.matches[i];
         if (c == null)
             continue;
@@ -197,7 +197,7 @@ dp.sh.Highlighter.prototype.IsInside = function (match) {
     return false;
 }
 dp.sh.Highlighter.prototype.ProcessRegexList = function () {
-    for (var i = 0; i < this.regexList.length; i++)
+    for (let i = 0; i < this.regexList.length; i++)
         this.GetMatches(this.regexList[i].regex, this.regexList[i].css);
 }
 dp.sh.Highlighter.prototype.ProcessSmartTabs = function (code) {
@@ -210,7 +210,7 @@ dp.sh.Highlighter.prototype.ProcessSmartTabs = function (code) {
         var left = line.substr(0, pos);
         var right = line.substr(pos + 1, line.length);
         var spaces = '';
-        for (var i = 0; i < count; i++)
+        for (let i = 0; i < count; i++)
             spaces += ' ';
         return left + spaces + right;
     }
@@ -225,7 +225,7 @@ dp.sh.Highlighter.prototype.ProcessSmartTabs = function (code) {
         }
         return line;
     }
-    for (var i = 0; i < lines.length; i++)
+    for (let i = 0; i < lines.length; i++)
         result += ProcessLine(lines[i], tabSize) + '\n';
     return result;
 }
@@ -252,7 +252,7 @@ dp.sh.Highlighter.prototype.SwitchToList = function () {
         columns.appendChild(div);
         this.bar.appendChild(columns);
     }
-    for (var i = 0, lineIndex = this.firstLine; i < lines.length - 1; i++, lineIndex++) {
+    for (let i = 0, lineIndex = this.firstLine; i < lines.length - 1; i++, lineIndex++) {
         var li = this.CreateElement('LI');
         var span = this.CreateElement('SPAN');
         li.className = (i % 2 == 0) ? 'alt' : '';
@@ -273,10 +273,10 @@ dp.sh.Highlighter.prototype.Highlight = function (code) {
 
     function Unindent(str) {
         var lines = dp.sh.Utils.FixForBlogger(str).split('\n');
-        var indents = new Array();
+        // var indents = new Array();
         var regex = new RegExp('^\\s*', 'g');
         var min = 1000;
-        for (var i = 0; i < lines.length && min > 0; i++) {
+        for (let i = 0; i < lines.length && min > 0; i++) {
             if (Trim(lines[i]).length == 0)
                 continue;
             var matches = regex.exec(lines[i]);
@@ -284,7 +284,7 @@ dp.sh.Highlighter.prototype.Highlight = function (code) {
                 min = Math.min(matches[0].length, min);
         }
         if (min > 0)
-            for (var i = 0; i < lines.length; i++)
+            for (let i = 0; i < lines.length; i++)
                 lines[i] = lines[i].substr(min);
         return lines.join('\n');
     }
@@ -322,10 +322,10 @@ dp.sh.Highlighter.prototype.Highlight = function (code) {
         return;
     }
     this.matches = this.matches.sort(dp.sh.Highlighter.SortCallback);
-    for (var i = 0; i < this.matches.length; i++)
+    for (let i = 0; i < this.matches.length; i++)
         if (this.IsInside(this.matches[i]))
             this.matches[i] = null;
-    for (var i = 0; i < this.matches.length; i++) {
+    for (let i = 0; i < this.matches.length; i++) {
         var match = this.matches[i];
         if (match == null || match.length == 0)
             continue;
@@ -347,7 +347,7 @@ dp.sh.BloggerMode = function () {
 dp.sh.HighlightAll = function (name, showGutter, showControls, collapseAll, firstLine, showColumns) {
     function FindValue() {
         var a = arguments;
-        for (var i = 0; i < a.length; i++) {
+        for (let i = 0; i < a.length; i++) {
             if (a[i] == null)
                 continue;
             if (typeof (a[i]) == 'string' && a[i] != '')
@@ -359,7 +359,7 @@ dp.sh.HighlightAll = function (name, showGutter, showControls, collapseAll, firs
     }
 
     function IsOptionSet(value, list) {
-        for (var i = 0; i < list.length; i++)
+        for (let i = 0; i < list.length; i++)
             if (list[i] == value)
                 return true;
         return false;
@@ -368,7 +368,7 @@ dp.sh.HighlightAll = function (name, showGutter, showControls, collapseAll, firs
     function GetOptionValue(name, list, defaultValue) {
         var regex = new RegExp('^' + name + '\\[(\\w+)\\]$', 'gi');
         var matches = null;
-        for (var i = 0; i < list.length; i++)
+        for (let i = 0; i < list.length; i++)
             if ((matches = regex.exec(list[i])) != null)
                 return matches[1];
         return defaultValue;
@@ -376,7 +376,7 @@ dp.sh.HighlightAll = function (name, showGutter, showControls, collapseAll, firs
 
     function FindTagsByName(list, name, tagName) {
         var tags = document.getElementsByTagName(tagName);
-        for (var i = 0; i < tags.length; i++)
+        for (let i = 0; i < tags.length; i++)
             if (tags[i].getAttribute('name') == name)
                 list.push(tags[i]);
     }
@@ -393,10 +393,10 @@ dp.sh.HighlightAll = function (name, showGutter, showControls, collapseAll, firs
         var aliases = dp.sh.Brushes[brush].Aliases;
         if (aliases == null)
             continue;
-        for (var i = 0; i < aliases.length; i++)
+        for (let i = 0; i < aliases.length; i++)
             registered[aliases[i]] = brush;
     }
-    for (var i = 0; i < elements.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
         var element = elements[i];
         var options = FindValue(element.attributes['class'], element.className, element.attributes['language'], element.language);
         var language = '';

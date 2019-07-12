@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Motto motto="Syntax Highlight Code In Word Documents" tips="代码高亮 —— 让你的代码在WORD中有个更美的排版！"/>
+    <Motto motto="Syntax Highlight Code In Word Documents" tips="代码高亮 —— 让你的代码在WORD中有个更美的排版！" />
 
     <div class="func-wrapper">
       <textarea v-model="input_code" name="input" id="input" placeholder="Input..."></textarea>
@@ -9,12 +9,12 @@
         <select v-model="selected" @change="select">
           <option v-for="item in choice" v-bind:key="item">{{ item }}</option>
         </select>
-        <Button @click.native="fnTransform" title="转化" size="normal" type="primary"/>
-        <Button @click.native="fnSelectCode" title="代码全选" size="normal" type="primary"/>
+        <Button @click.native="fnTransform" title="转化" size="normal" type="primary" />
+        <Button @click.native="fnSelectCode" title="代码全选" size="normal" type="primary" />
       </div>
     </div>
 
-    <Show ref="Show" :select_class="select_class" :brush_url="brush_url" v-if="load"/>
+    <Show ref="Show" :select_class="select_class" :brush_url="brush_url" v-if="load" />
   </div>
 </template>
 
@@ -119,11 +119,37 @@ export default {
   border-radius: 5px;
   border: none;
   background: rgba(241, 241, 241, 0.98);
-  width: 40vw;
-  height: 14vw;
-  max-width: 90vw;
-  max-height: 60vh;
   padding: 10px;
+}
+
+/* pc */
+@media only screen and (min-width: 1500px) {
+  #input {
+    width: 40vw;
+    height: 14vw;
+    max-width: 90vw;
+    max-height: 60vh;
+  }
+}
+
+/* pad */
+@media only screen and (min-width: 900px) and (max-width: 1500px) {
+  #input {
+    width: 60vw;
+    height: 20vw;
+    max-width: 90vw;
+    max-height: 60vh;
+  }
+}
+
+/* phone */
+@media only screen and (max-width: 900px) {
+  #input {
+    width: 80vw;
+    height: 40vw;
+    max-width: 90vw;
+    max-height: 60vh;
+  }
 }
 
 .func-wrapper {
